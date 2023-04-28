@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ControlJugador : MonoBehaviour
 {
@@ -23,11 +24,22 @@ public class ControlJugador : MonoBehaviour
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space)&& TocarSuelo())
         {
 
             fisica.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
 
         }
+    }
+    private bool TocarSuelo()
+    {
+        RaycastHit2D toca = Physics2D.Raycast
+            (transform.position, Vector2.down, 0.2f);
+        return toca.collider != null;
+    }
+    public void FinJuego()
+    {
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

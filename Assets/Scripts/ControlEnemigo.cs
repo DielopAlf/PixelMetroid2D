@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class ControlEnemigo : MonoBehaviour
 {
@@ -19,21 +21,27 @@ public class ControlEnemigo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(moviendoAFin)
-        {
-            transform.position = Vector3.MoveTowards
-                (transform.position, posicionFin, velocidad * Time.deltaTime);
-            if (transform.position == posicionFin)
-                moviendoAFin = false;
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards
-                (transform.position, posicionInicio, velocidad * Time.deltaTime);
-            if (transform.position == posicionInicio)
-                moviendoAFin = true;
 
-        }
-
+        MoverEnemigo();
     }
+    private void MoverEnemigo()
+    {
+
+        Vector3 posicionDestino = (moviendoAFin) ? posicionFin : posicionInicio;
+
+        transform.position = Vector3.MoveTowards(transform.position, posicionDestino, velocidad * Time.deltaTime);
+
+        if (transform.position == posicionFin) moviendoAFin = false;
+        if (transform.position == posicionInicio) moviendoAFin = true;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+
+            collision.gameObject.GetComponent<ControlJugador>().FinJuego();
+
+        }
+    }
+
 }
