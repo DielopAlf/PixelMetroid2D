@@ -8,16 +8,24 @@ public class ControlJugador : MonoBehaviour
 
     public int velocidad;
     public int fuerzaSalto;
-
+    public int puntuacion;
+    public int numVidas;
     private Rigidbody2D fisica;
     private SpriteRenderer sprite;
-
+    private Animator animacion;
+    private bool vulnerable;
+    private float tiempoInicio;
+    public float tiempoNivel;
+    private int tiempoEmpleado;
 
 
     private void Start()
     {
+        tiempoInicio = Time.time;
+        vulnerable = true;
         fisica = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        animacion = GetComponent<Animator>();
     }
 
    private void FixedUpdate()
@@ -34,7 +42,34 @@ public class ControlJugador : MonoBehaviour
         if (fisica.velocity.x > 0) sprite.flipX = false;
 
         else if (fisica.velocity.x < 0) sprite.flipX = true;
+
+      animarJugador();  
+
+      if (GameObject.FindGameObjectWithTag("PowerUp").Lenght ==0)
+      
+        GanarJuego();
+
+        tiempoEmpleado = (int)(Time.time - tiempoInicio);
+        if (tiempoNivel - tiempoEmpleado < 0)FinJuego();
+      
+
+    }
+    private void GanarJuego()
+    {
+        tiempoEmpleado=(int)(Time- tiempoInicio); 
+        puntuacion=(numVidas * 100) + (tiempoNivel - tiempoEmpleado);
         
+
+    }
+
+
+    private void animarJugador()
+    {
+        if(!TocarSuelo()) animacion.Play("jugadorSaltando");
+        else if ((fisica.velocity.x>1 || fisica .velocity.x < -1)&& fisica.velocity.y == 0)
+        animacion.Play("jugadorCorriendo");
+        else if ((fisica.velocity.x<1 || fisica .velocity.x > -1)&& fisica.velocity.y == 0)
+        animacion.Play("jugadorParado");
     }
     private bool TocarSuelo()
     {
@@ -46,5 +81,26 @@ public class ControlJugador : MonoBehaviour
     {
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void IncrementrarPuntos(int cantidad)
+    {
+        puntuacion += cantidad;
+
+    }
+    public void QuitarVida()
+    {
+        if (vulnerable)
+        {
+            vulnerable= false;
+            numVidas --;
+            if(numVidas ==0)FinJuego();
+            Invoke("HacerVulnerable",1f);
+            sprite.color = Color.red;
+        }
+    }
+    private  void HacerVulnerable()
+    {
+        vulnerable= true;
+        sprite.color = Color.white;
     }
 }

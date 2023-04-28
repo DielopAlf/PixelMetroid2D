@@ -38,10 +38,8 @@ public class ControlEnemigo : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-
-            collision.gameObject.GetComponent<ControlJugador>().FinJuego();
-
+            collision.gameObject.GetComponent<ControlJugador>().QuitarVida();
         }
     }
-
+    
 }
