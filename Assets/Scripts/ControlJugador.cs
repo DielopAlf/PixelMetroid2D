@@ -7,14 +7,17 @@ public class ControlJugador : MonoBehaviour
 {
 
     public int velocidad;
-
     public int fuerzaSalto;
 
     private Rigidbody2D fisica;
+    private SpriteRenderer sprite;
+
+
 
     private void Start()
     {
         fisica = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
    private void FixedUpdate()
@@ -25,11 +28,13 @@ public class ControlJugador : MonoBehaviour
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space)&& TocarSuelo())
-        {
+        
 
             fisica.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
+        if (fisica.velocity.x > 0) sprite.flipX = false;
 
-        }
+        else if (fisica.velocity.x < 0) sprite.flipX = true;
+        
     }
     private bool TocarSuelo()
     {
