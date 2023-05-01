@@ -5,7 +5,7 @@ using UnityEngine;
 public class ControlPowerUp : MonoBehaviour
 {
     public int  cantidad;
-    
+    public AudioClip recolectarSfx;
     
     private void OntriggerEnter2D(Collider2D collision)
 
@@ -13,7 +13,8 @@ public class ControlPowerUp : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<ControlJugador>().IncrementarPuntos(cantidad);
+            
+            collision.GetComponent<AudioSource>().PlayOneShot(recolectarSfx);
             Destroy(gameObject);
 
         }

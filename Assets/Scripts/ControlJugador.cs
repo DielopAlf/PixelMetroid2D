@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class ControlJugador : MonoBehaviour
 {
+    
+    public Canvas canvas;
+
+    private InterfazController hud;
 
     public int velocidad;
     public int fuerzaSalto;
@@ -18,6 +22,23 @@ public class ControlJugador : MonoBehaviour
     public float tiempoNivel;
     private int tiempoEmpleado;
 
+    private AudioSource audiosource;
+
+    public AudioClip saltoSfx;
+    public AudioClip vidasSfx;
+    
+
+
+
+    private void Awake()
+    {
+        audiosource = GetComponent<AudioSource>();
+    }
+    
+
+
+
+    private ControlDatosJuego datosjuegos;
 
     private void Start()
     {
@@ -26,6 +47,8 @@ public class ControlJugador : MonoBehaviour
         fisica = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animacion = GetComponent<Animator>();
+        hud = canvas.GetComponent<InterfazController>();
+        datosjuegos = GameObject.Find("DatosJuegos").GetComponent<ControlDatosJuego>();
     }
 
    private void FixedUpdate()
@@ -36,32 +59,40 @@ public class ControlJugador : MonoBehaviour
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space)&& TocarSuelo())
-        
+        {
 
             fisica.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
+            audiosource.PlayOneShot(saltoSfx);
+          }
         if (fisica.velocity.x > 0) sprite.flipX = false;
 
         else if (fisica.velocity.x < 0) sprite.flipX = true;
 
       animarJugador();  
 
-      if (GameObject.FindGameObjectWithTag("PowerUp").Lenght ==0)
+      GameObject[] powerUps = GameObject.FindGameObjectsWithTag("PowerUps");
+      hud.SetPowerUpsTxt(powerUps.Length);
+      if (powerUps.Length ==0)
       
         GanarJuego();
 
-        tiempoEmpleado = (int)(Time.time - tiempoInicio);
-        if (tiempoNivel - tiempoEmpleado < 0)FinJuego();
-      
+        tiempoEmpleado = Mathf.RoundToInt(Time.time - tiempoInicio);
+       hud.SetTiempoTxt(Mathf.RoundToInt(tiempoNivel - tiempoEmpleado));
+        if (tiempoNivel - tiempoEmpleado < 0)
+        {
+            FinJuego();
+        }
 
     }
     private void GanarJuego()
     {
-        tiempoEmpleado=(int)(Time- tiempoInicio); 
-        puntuacion=(numVidas * 100) + (tiempoNivel - tiempoEmpleado);
-        
+      
+        puntuacion = (numVidas * 100) + Mathf.RoundToInt(tiempoNivel - tiempoEmpleado);
 
+        datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
+        datosjuegos.Ganado = true;   
+        SceneManager.LoadScene("FinNivel");
     }
-
 
     private void animarJugador()
     {
@@ -79,8 +110,8 @@ public class ControlJugador : MonoBehaviour
     }
     public void FinJuego()
     {
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        datosjuegos.Ganado = false;
+        SceneManager.LoadScene("FinNivel");
     }
     public void IncrementrarPuntos(int cantidad)
     {
@@ -91,11 +122,14 @@ public class ControlJugador : MonoBehaviour
     {
         if (vulnerable)
         {
+            audiosource.PlayOneShot(vidasSfx);
             vulnerable= false;
             numVidas --;
+            hud.SetVidasTxt(numVidas);
             if(numVidas ==0)FinJuego();
             Invoke("HacerVulnerable",1f);
             sprite.color = Color.red;
+            audiosource.PlayOneShot(vidasSfx);
         }
     }
     private  void HacerVulnerable()
