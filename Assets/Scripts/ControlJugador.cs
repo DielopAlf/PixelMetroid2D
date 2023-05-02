@@ -105,7 +105,8 @@ public class ControlJugador : MonoBehaviour
     private bool TocarSuelo()
     {
         RaycastHit2D toca = Physics2D.Raycast
-            (transform.position, Vector2.down, 0.2f);
+            (transform.position + new Vector3(0, -2f,0) , 
+            Vector2.down, 0.2f);
         return toca.collider != null;
     }
     public void FinJuego()
