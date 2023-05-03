@@ -97,9 +97,9 @@ public class ControlJugador : MonoBehaviour
     private void animarJugador()
     {
         if(!TocarSuelo()) animacion.Play("jugadorSaltando");
-        else if ((fisica.velocity.x>1 || fisica .velocity.x < -1)&& fisica.velocity.y == 0)
+        else if ((fisica.velocity.x>1 || fisica.velocity.x < -1)&& fisica.velocity.y == 0)
         animacion.Play("jugadorCorriendo");
-        else if ((fisica.velocity.x<1 || fisica .velocity.x > -1)&& fisica.velocity.y == 0)
+        else if ((fisica.velocity.x<1 || fisica.velocity.x > -1)&& fisica.velocity.y == 0)
         animacion.Play("jugadorParado");
     }
     private bool TocarSuelo()
