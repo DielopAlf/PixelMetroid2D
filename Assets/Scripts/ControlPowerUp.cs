@@ -7,16 +7,16 @@ public class ControlPowerUp : MonoBehaviour
     public int  cantidad;
     public AudioClip recolectarSfx;
     
-    private void OntriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
 
     {
-
+        Debug.Log("recogido");
         if (collision.CompareTag("Player"))
         {
             
-            collision.GetComponent<AudioSource>().PlayOneShot(recolectarSfx);
+            collision.gameObject.GetComponent<ControlJugador>().IncrementrarPuntos(cantidad);//.GetComponent<AudioSource>().PlayOneShot(recolectarSfx);
             Destroy(gameObject);
-
+            
         }
 
     }
