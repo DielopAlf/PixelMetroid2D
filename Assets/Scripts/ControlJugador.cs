@@ -124,13 +124,20 @@ public class ControlJugador : MonoBehaviour
         if (vulnerable)
         {
             audiosource.PlayOneShot(vidasSfx);
-            vulnerable= false;
-            numVidas --;
+            vulnerable = false;
+            numVidas--;
             hud.SetVidasTxt(numVidas);
-            if(numVidas ==0)FinJuego();
-            Invoke("HacerVulnerable",1f);
-            sprite.color = Color.red;
-            audiosource.PlayOneShot(vidasSfx);
+            if (numVidas == 0)
+            {
+                // Reiniciar la escena
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            else
+            {
+                Invoke("HacerVulnerable", 1f);
+                sprite.color = Color.red;
+                audiosource.PlayOneShot(vidasSfx);
+            }
         }
     }
     private  void HacerVulnerable()
