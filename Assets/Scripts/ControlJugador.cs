@@ -26,7 +26,7 @@ public class ControlJugador : MonoBehaviour
 
     public AudioClip saltoSfx;
     public AudioClip vidasSfx;
-    
+
 
 
 
