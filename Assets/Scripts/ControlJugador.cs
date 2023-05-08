@@ -21,7 +21,7 @@ public class ControlJugador : MonoBehaviour
     private float tiempoInicio;
     public float tiempoNivel;
     private int tiempoEmpleado;
-
+    
     private AudioSource audiosource;
 
     public AudioClip saltoSfx;
