@@ -17,7 +17,7 @@ public class ControlPowerUp : MonoBehaviour
             collision.gameObject.GetComponent<ControlJugador>().IncrementrarPuntos(cantidad);
             collision.GetComponent<AudioSource>().PlayOneShot(recolectarSfx);                                          
             Destroy(gameObject);
-            
+               
         }
 
     }

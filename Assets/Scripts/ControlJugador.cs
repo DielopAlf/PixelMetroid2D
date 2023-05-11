@@ -118,6 +118,9 @@ public class ControlJugador : MonoBehaviour
     public void FinJuego()
     {
         datosjuegos.Ganado = false;
+
+        datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
+
         SceneManager.LoadScene("FinNivel");
     }
     public void IncrementrarPuntos(int cantidad)
@@ -156,4 +159,24 @@ public class ControlJugador : MonoBehaviour
         vulnerable= true;
         sprite.color = Color.white;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+
+    {
+        
+        if (collision.CompareTag("meta"))
+        {
+            if(puntuacion<=0)
+            {
+             FinJuego();
+            }
+            else 
+            {
+
+                GanarJuego();
+            }
+        }
+
+    }
+
+
 }
