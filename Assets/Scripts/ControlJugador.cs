@@ -68,25 +68,25 @@ public class ControlJugador : MonoBehaviour
 
         else if (fisica.velocity.x < 0) sprite.flipX = true;
 
-      animarJugador();  
+      animarJugador();
 
-      GameObject[] powerUps = GameObject.FindGameObjectsWithTag("PowerUps");
-      hud.SetPowerUpsTxt(powerUps.Length);
-      if (powerUps.Length ==0)
-      
-        GanarJuego();
+        hud.SetPowerUpsTxt(GameObject.FindGameObjectsWithTag("PowerUp").Length);
+        if (GameObject.FindGameObjectsWithTag("PowerUp").Length== 0)
 
-        tiempoEmpleado = Mathf.RoundToInt(Time.time - tiempoInicio);
+            GanarJuego();
+
+       tiempoEmpleado = Mathf.RoundToInt(Time.time - tiempoInicio);
        hud.SetTiempoTxt(Mathf.RoundToInt(tiempoNivel - tiempoEmpleado));
-        if (tiempoNivel - tiempoEmpleado < 0)
-        {
-            FinJuego();
-        }
+        if (tiempoNivel - tiempoEmpleado < 0) FinJuego();
+        
+           
+        
+        
 
     }
     private void GanarJuego()
     {
-      
+        float tiempoEmpleado = Time.time - tiempoInicio;
         puntuacion = (numVidas * 100) + Mathf.RoundToInt(tiempoNivel - tiempoEmpleado);
 
         datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
