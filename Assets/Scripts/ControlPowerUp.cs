@@ -14,8 +14,8 @@ public class ControlPowerUp : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             
-            collision.gameObject.GetComponent<ControlJugador>().IncrementrarPuntos(cantidad);//.
-            collision.GetComponent<AudioSource>().PlayOneShot(recolectarSfx);                                                                            //GetComponent<AudioSource>().PlayOneShot(recolectarSfx);
+            collision.gameObject.GetComponent<ControlJugador>().IncrementrarPuntos(cantidad);
+            collision.GetComponent<AudioSource>().PlayOneShot(recolectarSfx);                                          
             Destroy(gameObject);
             
         }

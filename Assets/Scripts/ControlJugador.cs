@@ -22,7 +22,11 @@ public class ControlJugador : MonoBehaviour
     public float tiempoNivel;
     private int tiempoEmpleado;
     
+
+
     private AudioSource audiosource;
+
+
 
     public AudioClip saltoSfx;
     public AudioClip vidasSfx;
@@ -78,7 +82,7 @@ public class ControlJugador : MonoBehaviour
       
         GanarJuego();
 
-        tiempoEmpleado = Mathf.RoundToInt(Time.time - tiempoInicio);
+        tiempoEmpleado = (int)(Time.time - tiempoInicio);
        hud.SetTiempoTxt(Mathf.RoundToInt(tiempoNivel - tiempoEmpleado));
         if (tiempoNivel - tiempoEmpleado < 1)
         {
@@ -89,7 +93,7 @@ public class ControlJugador : MonoBehaviour
     private void GanarJuego()
     {
       
-        puntuacion = (numVidas * 100) + Mathf.RoundToInt(tiempoNivel - tiempoEmpleado);
+       
 
         datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
         datosjuegos.Ganado = true;   
