@@ -26,7 +26,7 @@ public class ControlJugador : MonoBehaviour
 
     public AudioClip saltoSfx;
     public AudioClip vidasSfx;
-
+    private ControlDatosJuego datosjuegos;
 
 
 
@@ -38,17 +38,19 @@ public class ControlJugador : MonoBehaviour
 
 
 
-    private ControlDatosJuego datosjuegos;
+    
 
     private void Start()
     {
+        
         tiempoInicio = Time.time;
         vulnerable = true;
         fisica = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animacion = GetComponent<Animator>();
         hud = canvas.GetComponent<InterfazController>();
-        datosjuegos = GameObject.Find("DatosJuegos").GetComponent<ControlDatosJuego>();
+        datosjuegos = GameObject.Find("DatosJuego").GetComponent<ControlDatosJuego>();
+        datosjuegos.Puntuacion=0;
     }
 
    private void FixedUpdate()
@@ -78,7 +80,7 @@ public class ControlJugador : MonoBehaviour
 
         tiempoEmpleado = Mathf.RoundToInt(Time.time - tiempoInicio);
        hud.SetTiempoTxt(Mathf.RoundToInt(tiempoNivel - tiempoEmpleado));
-        if (tiempoNivel - tiempoEmpleado < 0)
+        if (tiempoNivel - tiempoEmpleado < 1)
         {
             FinJuego();
         }
@@ -127,10 +129,15 @@ public class ControlJugador : MonoBehaviour
             vulnerable = false;
             numVidas--;
             hud.SetVidasTxt(numVidas);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+
             if (numVidas == 0)
             {
                 // Reiniciar la escena
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                // TODO: Cargar nueva escena
+                FinJuego();
             }
             else
             {
