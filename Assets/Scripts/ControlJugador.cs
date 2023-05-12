@@ -32,6 +32,9 @@ public class ControlJugador : MonoBehaviour
     public AudioClip vidasSfx;
     private ControlDatosJuego datosjuegos;
 
+    private Vector2 puntoInicio;
+
+
 
 
     private void Awake()
@@ -46,7 +49,7 @@ public class ControlJugador : MonoBehaviour
 
     private void Start()
     {
-        
+        puntoInicio = transform.position;
         tiempoInicio = Time.time;
         vulnerable = true;
         fisica = GetComponent<Rigidbody2D>();
@@ -78,9 +81,11 @@ public class ControlJugador : MonoBehaviour
 
       GameObject[] powerUps = GameObject.FindGameObjectsWithTag("PowerUps");
       hud.SetPowerUpsTxt(powerUps.Length);
-      if (powerUps.Length ==0)
+
+        //Si los power ups llegan 0  acaba pero se quita por que puse una meta borrar cuando se acabe
+     /* if (powerUps.Length ==0)
       
-        GanarJuego();
+        GanarJuego();*/
 
         tiempoEmpleado = (int)(Time.time - tiempoInicio);
        hud.SetTiempoTxt(Mathf.RoundToInt(tiempoNivel - tiempoEmpleado));
@@ -174,6 +179,12 @@ public class ControlJugador : MonoBehaviour
 
                 GanarJuego();
             }
+        }
+        else if (collision.CompareTag("Muerto"))
+        {
+            transform.position = puntoInicio;
+            QuitarVida();
+            
         }
 
     }

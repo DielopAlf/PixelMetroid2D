@@ -23,19 +23,20 @@ public class ControlFinNivel : MonoBehaviour
         if(datosjuego.Ganado)
         {
               string mensajeFinal2 ="";
-             float  porcentajeconseguido = datosjuego.Puntuacion/datosjuego.MaxPuntuacion;
+             float  porcentajeconseguido = (float)datosjuego.Puntuacion/(float)datosjuego.MaxPuntuacion;
              Debug.Log(datosjuego.Puntuacion);
               Debug.Log(datosjuego.MaxPuntuacion);
               Debug.Log(porcentajeconseguido);
             if (porcentajeconseguido >= 1f)
             {
+
                      mensajeFinal2="excelente los conseguiste todos";
                                  
             
             }
             else if (porcentajeconseguido  >= 0.66f && porcentajeconseguido <1f)
             {
-                     mensajeFinal2="casi,puedes hacerlo mejor";
+                     mensajeFinal2="casi,estas a nada de lograrlo";
 
             
             }
