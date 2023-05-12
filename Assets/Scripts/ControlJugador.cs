@@ -27,6 +27,7 @@ public class ControlJugador : MonoBehaviour
     private AudioSource audiosource;
 
 
+    public AudioClip ganar;
 
     public AudioClip saltoSfx;
     public AudioClip vidasSfx;
@@ -103,6 +104,8 @@ public class ControlJugador : MonoBehaviour
         datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
         datosjuegos.Ganado = true;   
         SceneManager.LoadScene("FinNivel");
+        audiosource.PlayOneShot(ganar);
+
     }
 
     private void animarJugador()
