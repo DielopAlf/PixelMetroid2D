@@ -22,19 +22,19 @@ public class ControlJugador : MonoBehaviour
     public float tiempoNivel;
     private int tiempoEmpleado;
     
-
-
+   public Transform puntoDisparo;
+    public GameObject prefabProyectil;
+    public float fuerzaDisparo;
+    public AudioClip sonidoDisparo;
+    public Animator animacionDisparo;
+   
     private AudioSource audiosource;
 
 
-    public AudioClip ganar;
 
     public AudioClip saltoSfx;
     public AudioClip vidasSfx;
     private ControlDatosJuego datosjuegos;
-
-    private Vector2 puntoInicio;
-
 
 
 
@@ -50,7 +50,7 @@ public class ControlJugador : MonoBehaviour
 
     private void Start()
     {
-        puntoInicio = transform.position;
+        
         tiempoInicio = Time.time;
         vulnerable = true;
         fisica = GetComponent<Rigidbody2D>();
@@ -82,11 +82,9 @@ public class ControlJugador : MonoBehaviour
 
       GameObject[] powerUps = GameObject.FindGameObjectsWithTag("PowerUps");
       hud.SetPowerUpsTxt(powerUps.Length);
-
-        //Si los power ups llegan 0  acaba pero se quita por que puse una meta borrar cuando se acabe
-     /* if (powerUps.Length ==0)
+      if (powerUps.Length ==0)
       
-        GanarJuego();*/
+        GanarJuego();
 
         tiempoEmpleado = (int)(Time.time - tiempoInicio);
        hud.SetTiempoTxt(Mathf.RoundToInt(tiempoNivel - tiempoEmpleado));
@@ -94,6 +92,11 @@ public class ControlJugador : MonoBehaviour
         {
             FinJuego();
         }
+         if (Input.GetMouseButtonDown(0))
+        {
+            DispararProyectil();
+        }
+
 
     }
     private void GanarJuego()
@@ -104,8 +107,6 @@ public class ControlJugador : MonoBehaviour
         datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
         datosjuegos.Ganado = true;   
         SceneManager.LoadScene("FinNivel");
-        audiosource.PlayOneShot(ganar);
-
     }
 
     private void animarJugador()
@@ -183,14 +184,20 @@ public class ControlJugador : MonoBehaviour
                 GanarJuego();
             }
         }
-        else if (collision.CompareTag("Muerto"))
-        {
-            transform.position = puntoInicio;
-            QuitarVida();
-            
-        }
 
     }
+ private void DispararProyectil()
+    {
+        GameObject disparo = Instantiate(prefabProyectil, puntoDisparo.position, puntoDisparo.rotation);
+        disparo.AddComponent<Rigidbody2D>();
 
+        Rigidbody2D rbDisparo = disparo.GetComponent<Rigidbody2D>();
+        rbDisparo.AddForce(puntoDisparo.right * fuerzaDisparo, ForceMode2D.Impulse);
+
+        AudioSource.PlayClipAtPoint(sonidoDisparo, puntoDisparo.position);
+
+        animacionDisparo.SetTrigger("disparar");
+    }
 
 }
+
