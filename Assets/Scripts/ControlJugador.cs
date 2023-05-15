@@ -31,6 +31,7 @@ public class ControlJugador : MonoBehaviour
    
     private AudioSource audiosource;
 
+    private float velocidadOriginal;
 
 
     public AudioClip saltoSfx;
@@ -60,16 +61,21 @@ public class ControlJugador : MonoBehaviour
         hud = canvas.GetComponent<InterfazController>();
         datosjuegos = GameObject.Find("DatosJuego").GetComponent<ControlDatosJuego>();
         datosjuegos.Puntuacion=0;
+
+        velocidadOriginal = velocidad;
+
+
     }
 
-   private void FixedUpdate()
+    private void FixedUpdate()
     {
         float entradax = Input.GetAxis("Horizontal");
         fisica.velocity = new Vector2(entradax * velocidad, fisica.velocity.y);
     }
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)&& TocarSuelo())
+        GameObject[] powerUpsArray = GameObject.FindGameObjectsWithTag("PowerUps");
+        if (Input.GetKeyDown(KeyCode.Space)&& TocarSuelo())
         {
 
             fisica.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
@@ -79,9 +85,16 @@ public class ControlJugador : MonoBehaviour
 
         else if (fisica.velocity.x < 0) sprite.flipX = true;
 
-      animarJugador();  
+       
 
-      GameObject[] powerUps = GameObject.FindGameObjectsWithTag("PowerUps");
+        else if (powerUpsArray.Length == 0)
+        {
+            GanarJuego();
+        }
+
+        animarJugador();  
+
+      GameObject[] powerUps = GameObject.FindGameObjectsWithTag("Potenciadores");
       hud.SetPowerUpsTxt(powerUps.Length);
       if (powerUps.Length ==0)
       
@@ -109,7 +122,21 @@ public class ControlJugador : MonoBehaviour
         datosjuegos.Ganado = true;   
         SceneManager.LoadScene("FinNivel");
     }
+    private void ActivarPowerUpVelocidad(float duracion)
+    {
+        velocidad *= 2; // Por ejemplo, duplicar la velocidad actual
 
+        // Restaurar la velocidad original después de la duración del power-up
+        StartCoroutine(RestaurarVelocidadOriginal(duracion));
+    }
+
+    private IEnumerator RestaurarVelocidadOriginal(float duracion)
+    {
+        yield return new WaitForSeconds(duracion);
+
+        // Restaurar la velocidad original
+        velocidad = Mathf.RoundToInt(velocidadOriginal);
+    }
     private void animarJugador()
     {
         if(!TocarSuelo()) animacion.Play("jugadorSaltando");
@@ -194,10 +221,19 @@ public class ControlJugador : MonoBehaviour
 
             QuitarVida();
         }
+        else  if (collision.CompareTag("PowerUpVelocidad"))
+        {
+            ActivarPowerUpVelocidad(10f); // Por ejemplo, activar el power-up de velocidad durante 10 segundos
+
+            // Destruir el power-up después de recogerlo
+            Destroy(collision.gameObject);
+        }
+
+
     }
 
 
- private void DispararProyectil()
+    private void DispararProyectil()
     {
         GameObject disparo = Instantiate(prefabProyectil, puntoDisparo.position, puntoDisparo.rotation);
         disparo.AddComponent<Rigidbody2D>();
