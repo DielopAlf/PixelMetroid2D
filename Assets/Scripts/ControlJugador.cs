@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class ControlJugador : MonoBehaviour
 {
-    
+    private Vector3 posicionInicial;
+
     public Canvas canvas;
 
     private InterfazController hud;
@@ -50,7 +51,7 @@ public class ControlJugador : MonoBehaviour
 
     private void Start()
     {
-        
+        posicionInicial = transform.position;
         tiempoInicio = Time.time;
         vulnerable = true;
         fisica = GetComponent<Rigidbody2D>();
@@ -168,6 +169,7 @@ public class ControlJugador : MonoBehaviour
         vulnerable= true;
         sprite.color = Color.white;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
 
     {
@@ -185,7 +187,16 @@ public class ControlJugador : MonoBehaviour
             }
         }
 
+        else if (collision.CompareTag("Muerto"))
+        {
+            // Regresar a la posición inicial
+            transform.position = posicionInicial;
+
+            QuitarVida();
+        }
     }
+
+
  private void DispararProyectil()
     {
         GameObject disparo = Instantiate(prefabProyectil, puntoDisparo.position, puntoDisparo.rotation);
