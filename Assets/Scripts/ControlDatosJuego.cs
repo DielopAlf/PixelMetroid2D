@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class ControlDatosJuego : MonoBehaviour
 {
-
+    private int maxpuntuacion;
     private int puntuacion;
     private bool ganado;
     
    public int Puntuacion { get => puntuacion; set => puntuacion = value; }
 
    public bool Ganado { get => ganado; set => ganado = value; }
+   public int MaxPuntuacion { get => maxpuntuacion; set => maxpuntuacion = value; }
 
    private void Awake()
    {
@@ -25,6 +26,21 @@ public class ControlDatosJuego : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
 
     }
-   }
- 
+     ControlPowerUp[] powerups = FindObjectsOfType<ControlPowerUp>();
+     if(powerups.Length>0)
+     {
+          foreach (ControlPowerUp powerup in powerups)
+     {
+          maxpuntuacion += powerup.cantidad;     
+     }
+     }
+
+
+
+     
+
+   }  
+
+    
+
 }

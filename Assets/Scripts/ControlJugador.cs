@@ -21,12 +21,20 @@ public class ControlJugador : MonoBehaviour
     private float tiempoInicio;
     public float tiempoNivel;
     private int tiempoEmpleado;
-
+    
+   public Transform puntoDisparo;
+    public GameObject prefabProyectil;
+    public float fuerzaDisparo;
+    public AudioClip sonidoDisparo;
+    public Animator animacionDisparo;
+   
     private AudioSource audiosource;
+
+
 
     public AudioClip saltoSfx;
     public AudioClip vidasSfx;
-
+    private ControlDatosJuego datosjuegos;
 
 
 
@@ -38,17 +46,19 @@ public class ControlJugador : MonoBehaviour
 
 
 
-    private ControlDatosJuego datosjuegos;
+    
 
     private void Start()
     {
+        
         tiempoInicio = Time.time;
         vulnerable = true;
         fisica = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animacion = GetComponent<Animator>();
         hud = canvas.GetComponent<InterfazController>();
-        datosjuegos = GameObject.Find("DatosJuegos").GetComponent<ControlDatosJuego>();
+        datosjuegos = GameObject.Find("DatosJuego").GetComponent<ControlDatosJuego>();
+        datosjuegos.Puntuacion=0;
     }
 
    private void FixedUpdate()
@@ -68,26 +78,31 @@ public class ControlJugador : MonoBehaviour
 
         else if (fisica.velocity.x < 0) sprite.flipX = true;
 
-      animarJugador();
+      animarJugador();  
 
-        hud.SetPowerUpsTxt(GameObject.FindGameObjectsWithTag("PowerUp").Length);
-        if (GameObject.FindGameObjectsWithTag("PowerUp").Length== 0)
+      GameObject[] powerUps = GameObject.FindGameObjectsWithTag("PowerUps");
+      hud.SetPowerUpsTxt(powerUps.Length);
+      if (powerUps.Length ==0)
+      
+        GanarJuego();
 
-            GanarJuego();
-
-       tiempoEmpleado = Mathf.RoundToInt(Time.time - tiempoInicio);
+        tiempoEmpleado = (int)(Time.time - tiempoInicio);
        hud.SetTiempoTxt(Mathf.RoundToInt(tiempoNivel - tiempoEmpleado));
-        if (tiempoNivel - tiempoEmpleado < 0) FinJuego();
-        
-           
-        
-        
+        if (tiempoNivel - tiempoEmpleado < 1)
+        {
+            FinJuego();
+        }
+         if (Input.GetMouseButtonDown(0))
+        {
+            DispararProyectil();
+        }
+
 
     }
     private void GanarJuego()
     {
-        float tiempoEmpleado = Time.time - tiempoInicio;
-        puntuacion = (numVidas * 100) + Mathf.RoundToInt(tiempoNivel - tiempoEmpleado);
+      
+       
 
         datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
         datosjuegos.Ganado = true;   
@@ -112,6 +127,9 @@ public class ControlJugador : MonoBehaviour
     public void FinJuego()
     {
         datosjuegos.Ganado = false;
+
+        datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
+
         SceneManager.LoadScene("FinNivel");
     }
     public void IncrementrarPuntos(int cantidad)
@@ -127,10 +145,15 @@ public class ControlJugador : MonoBehaviour
             vulnerable = false;
             numVidas--;
             hud.SetVidasTxt(numVidas);
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+
             if (numVidas == 0)
             {
                 // Reiniciar la escena
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                // TODO: Cargar nueva escena
+                FinJuego();
             }
             else
             {
@@ -145,4 +168,36 @@ public class ControlJugador : MonoBehaviour
         vulnerable= true;
         sprite.color = Color.white;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+
+    {
+        
+        if (collision.CompareTag("meta"))
+        {
+            if(puntuacion<=0)
+            {
+             FinJuego();
+            }
+            else 
+            {
+
+                GanarJuego();
+            }
+        }
+
+    }
+ private void DispararProyectil()
+    {
+        GameObject disparo = Instantiate(prefabProyectil, puntoDisparo.position, puntoDisparo.rotation);
+        disparo.AddComponent<Rigidbody2D>();
+
+        Rigidbody2D rbDisparo = disparo.GetComponent<Rigidbody2D>();
+        rbDisparo.AddForce(puntoDisparo.right * fuerzaDisparo, ForceMode2D.Impulse);
+
+        AudioSource.PlayClipAtPoint(sonidoDisparo, puntoDisparo.position);
+
+        animacionDisparo.SetTrigger("disparar");
+    }
+
 }
+

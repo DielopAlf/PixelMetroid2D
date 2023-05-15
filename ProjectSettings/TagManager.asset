@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - PowerUps
+  - meta
+  - Muerto
+  - projectile
   layers:
   - Default
   - TransparentFX
