@@ -12,6 +12,7 @@ TagManager:
   - PowerUpVelocidad
   - Enemy
   - Proyectil
+  - PowerUpInvencibilidad
   layers:
   - Default
   - TransparentFX

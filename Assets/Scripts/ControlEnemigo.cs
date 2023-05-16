@@ -54,8 +54,10 @@ public class ControlEnemigo : MonoBehaviour
                 }
             }
             else if (other.gameObject.CompareTag("Player"))
-        {
+          {
             other.gameObject.GetComponent<ControlJugador>().QuitarVida();
-        }
+         }
+             
     }
+
 }

@@ -37,14 +37,29 @@ public class ControlJugador : MonoBehaviour
 
     private Balas balas;
 
+    private bool invencible;
+    private float duracionInvencibilidad;
+
+    private bool perderVidasActivo = true;
+
+    private bool invulnerable = false;
+
+
+
+    public void ActivarPerderVidas()
+    {
+        perderVidasActivo = true;
+    }
+    public void DesactivarPerderVidas()
+    {
+        perderVidasActivo = false;
+    }
+
+
     private void Awake()
     {
         audiosource = GetComponent<AudioSource>();
     }
-    
-
-
-
     
 
     private void Start()
@@ -57,12 +72,14 @@ public class ControlJugador : MonoBehaviour
         animacion = GetComponent<Animator>();
         hud = canvas.GetComponent<InterfazController>();
         datosjuegos = GameObject.Find("DatosJuego").GetComponent<ControlDatosJuego>();
-       // datosjuegos.Puntuacion=0;
-
+        // datosjuegos.Puntuacion=0;
+        invencible = false;
+        duracionInvencibilidad = 0f;
         velocidadOriginal = velocidad;
 
-        balas = GetComponent<Balas>();
+       balas = GetComponent<Balas>();
     }
+   
 
     private void FixedUpdate()
     {
@@ -107,12 +124,30 @@ public class ControlJugador : MonoBehaviour
         {
             FinJuego();
         }
-       /*  if (Input.GetMouseButtonDown(0))
+        /*  if (Input.GetMouseButtonDown(0))
+         {
+             DispararProyectil();
+         }*/
+
+       else if (invencible)
         {
-            DispararProyectil();
-        }*/
+            // Realizar acciones específicas durante la invencibilidad
 
+            duracionInvencibilidad -= Time.deltaTime;
+            if (duracionInvencibilidad <= 0f)
+            {
+                invencible = false;
 
+                // Restaurar propiedades normales después de la invencibilidad
+            }
+        }
+    }
+    public void ActivarInvencibilidad(float duracion)
+    {
+        invencible = true;
+        duracionInvencibilidad = duracion;
+
+        // Realizar acciones específicas al activar la invencibilidad
     }
     private void GanarJuego()
     {
@@ -168,8 +203,9 @@ public class ControlJugador : MonoBehaviour
     }
     public void QuitarVida()
     {
-        if (vulnerable)
+        if (vulnerable )
         {
+            invulnerable = true;
             audiosource.PlayOneShot(vidasSfx);
             vulnerable = false;
             numVidas--;
@@ -190,6 +226,11 @@ public class ControlJugador : MonoBehaviour
                 sprite.color = Color.red;
                 audiosource.PlayOneShot(vidasSfx);
             }
+        }
+        else if (!vulnerable)
+        {
+            audiosource.PlayOneShot(vidasSfx);
+            sprite.color = Color.green; // Otra forma de indicar que el jugador es invencible
         }
     }
     private  void HacerVulnerable()
@@ -232,20 +273,12 @@ public class ControlJugador : MonoBehaviour
 
 
     }
-
-
-   /* private void DispararProyectil()
+    public bool EsInvulnerable()
     {
-        GameObject disparo = Instantiate(prefabProyectil, puntoDisparo.position, puntoDisparo.rotation);
-        disparo.AddComponent<Rigidbody2D>();
+        return invulnerable;
+    }
 
-        Rigidbody2D rbDisparo = disparo.GetComponent<Rigidbody2D>();
-        rbDisparo.AddForce(puntoDisparo.right * fuerzaDisparo, ForceMode2D.Impulse);
 
-        AudioSource.PlayClipAtPoint(sonidoDisparo, puntoDisparo.position);
-
-        animacionDisparo.SetTrigger("disparar");
-    }*/
 
 }
 

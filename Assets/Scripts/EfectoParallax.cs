@@ -11,17 +11,19 @@ public class EfectoParallax : MonoBehaviour
     void Start()
     {
         camara = Camera.main.transform;
-        ultimaPosicionCamara = camara.position;
+        if (camara != null)
+        {
+            ultimaPosicionCamara = camara.position;
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-        Vector3 movimientoFondo = camara.position - ultimaPosicionCamara;
-        transform.position += new Vector3(movimientoFondo.x * efectoParallax, movimientoFondo.y, 0);
-        ultimaPosicionCamara = camara.position;
-
-
+        if (camara != null)
+        {
+            Vector3 movimientoFondo = camara.position - ultimaPosicionCamara;
+            transform.position += new Vector3(movimientoFondo.x * efectoParallax, movimientoFondo.y, 0);
+            ultimaPosicionCamara = camara.position;
+        }
     }
 }
