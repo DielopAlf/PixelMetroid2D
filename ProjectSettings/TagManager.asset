@@ -9,6 +9,9 @@ TagManager:
   - Muerto
   - projectile
   - Potenciadores
+  - PowerUpVelocidad
+  - Enemy
+  - Proyectil
   layers:
   - Default
   - TransparentFX

@@ -23,11 +23,8 @@ public class ControlJugador : MonoBehaviour
     public float tiempoNivel;
     private int tiempoEmpleado;
     
-   public Transform puntoDisparo;
-    public GameObject prefabProyectil;
-    public float fuerzaDisparo;
-    public AudioClip sonidoDisparo;
-    public Animator animacionDisparo;
+   
+   
    
     private AudioSource audiosource;
 
@@ -38,7 +35,7 @@ public class ControlJugador : MonoBehaviour
     public AudioClip vidasSfx;
     private ControlDatosJuego datosjuegos;
 
-
+    private Balas balas;
 
     private void Awake()
     {
@@ -60,11 +57,11 @@ public class ControlJugador : MonoBehaviour
         animacion = GetComponent<Animator>();
         hud = canvas.GetComponent<InterfazController>();
         datosjuegos = GameObject.Find("DatosJuego").GetComponent<ControlDatosJuego>();
-        datosjuegos.Puntuacion=0;
+       // datosjuegos.Puntuacion=0;
 
         velocidadOriginal = velocidad;
 
-
+        balas = GetComponent<Balas>();
     }
 
     private void FixedUpdate()
@@ -85,20 +82,24 @@ public class ControlJugador : MonoBehaviour
 
         else if (fisica.velocity.x < 0) sprite.flipX = true;
 
-       
-
-        else if (powerUpsArray.Length == 0)
+        else if (Input.GetMouseButtonDown(0))
         {
-            GanarJuego();
+            balas.Disparar();
         }
+
+        /* else if (powerUpsArray.Length == 0)
+         {
+             GanarJuego();
+         }*/
 
         animarJugador();  
 
-      GameObject[] powerUps = GameObject.FindGameObjectsWithTag("Potenciadores");
+      GameObject[] powerUps = GameObject.FindGameObjectsWithTag("PowerUps");
       hud.SetPowerUpsTxt(powerUps.Length);
-      if (powerUps.Length ==0)
+
+      /*if (powerUps.Length ==0)
       
-        GanarJuego();
+        GanarJuego();*/
 
         tiempoEmpleado = (int)(Time.time - tiempoInicio);
        hud.SetTiempoTxt(Mathf.RoundToInt(tiempoNivel - tiempoEmpleado));
@@ -106,10 +107,10 @@ public class ControlJugador : MonoBehaviour
         {
             FinJuego();
         }
-         if (Input.GetMouseButtonDown(0))
+       /*  if (Input.GetMouseButtonDown(0))
         {
             DispararProyectil();
-        }
+        }*/
 
 
     }
@@ -216,16 +217,16 @@ public class ControlJugador : MonoBehaviour
 
         else if (collision.CompareTag("Muerto"))
         {
-            // Regresar a la posición inicial
+          
             transform.position = posicionInicial;
 
             QuitarVida();
         }
-        else  if (collision.CompareTag("PowerUpVelocidad"))
+        else if (collision.CompareTag("PowerUpVelocidad"))
         {
-            ActivarPowerUpVelocidad(10f); // Por ejemplo, activar el power-up de velocidad durante 10 segundos
+            ActivarPowerUpVelocidad(10f);
 
-            // Destruir el power-up después de recogerlo
+            
             Destroy(collision.gameObject);
         }
 
@@ -233,7 +234,7 @@ public class ControlJugador : MonoBehaviour
     }
 
 
-    private void DispararProyectil()
+   /* private void DispararProyectil()
     {
         GameObject disparo = Instantiate(prefabProyectil, puntoDisparo.position, puntoDisparo.rotation);
         disparo.AddComponent<Rigidbody2D>();
@@ -244,7 +245,7 @@ public class ControlJugador : MonoBehaviour
         AudioSource.PlayClipAtPoint(sonidoDisparo, puntoDisparo.position);
 
         animacionDisparo.SetTrigger("disparar");
-    }
+    }*/
 
 }
 
