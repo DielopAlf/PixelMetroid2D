@@ -9,11 +9,45 @@ public class Balas : MonoBehaviour
     public float fuerzaDisparo;
     public AudioClip sonidoDisparo;
 
+    public float tiempoEntreProyectiles = 0.75f;
+    private bool isFiring = false;
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            IniciarDisparoContinuo();
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            DetenerDisparoContinuo();
+        }
+    }
+
+    public void IniciarDisparoContinuo()
+    {
+        if (!isFiring)
+        {
+            isFiring = true;
+            StartCoroutine(FireContinuous());
+        }
+    }
+
+    public void DetenerDisparoContinuo()
+    {
+        if (isFiring)
+        {
+            isFiring = false;
+            StopCoroutine(FireContinuous());
+        }
+    }
+
+    private IEnumerator FireContinuous()
+    {
+        while (isFiring)
         {
             Disparar();
+            yield return new WaitForSeconds(tiempoEntreProyectiles);
         }
     }
 
@@ -24,13 +58,10 @@ public class Balas : MonoBehaviour
 
         Vector2 direccion = (transform.localScale.x > 0) ? Vector2.right : Vector2.left;
 
-       
         rbDisparo.AddForce(direccion * fuerzaDisparo, ForceMode2D.Impulse);
 
         AudioSource.PlayClipAtPoint(sonidoDisparo, puntoDisparo.position);
 
-        Destroy(disparo, 0.3f); 
+        Destroy(disparo, 0.3f);
     }
-    
-
 }

@@ -89,11 +89,19 @@ public class ControlJugador : MonoBehaviour
 
         else if (fisica.velocity.x < 0) sprite.flipX = true;
 
-        else if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             balas.Disparar();
         }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            balas.IniciarDisparoContinuo();
+        }
+        else if (Input.GetKeyUp(KeyCode.W))
+        {
+            balas.DetenerDisparoContinuo();
+        }
         /* else if (powerUpsArray.Length == 0)
          {
              GanarJuego();
