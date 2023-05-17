@@ -14979,7 +14979,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2407505853485255225, guid: 05c1ce32dc561664b99ae684e851b9a1, type: 3}
       propertyPath: m_TagString
-      value: PowerUpInvencibilidad
+      value: PowerUpVelocidad
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05c1ce32dc561664b99ae684e851b9a1, type: 3}
@@ -15784,6 +15784,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1164376617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164376605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 174a7c4dcbc49db4e9db712861c95b19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cantidad: 2
+  recolectarSfx: {fileID: 8300000, guid: 7973dd60267fbab49a25f80ea42d9671, type: 3}
 --- !u!1 &1203298829
 GameObject:
   m_ObjectHideFlags: 0
@@ -17650,7 +17664,6 @@ GameObject:
   - component: {fileID: 2038787368}
   - component: {fileID: 2038787369}
   - component: {fileID: 2038787370}
-  - component: {fileID: 2038787372}
   m_Layer: 0
   m_Name: player-idle-1
   m_TagString: Player
@@ -17915,19 +17928,6 @@ MonoBehaviour:
   puntoDisparo: {fileID: 2038787364}
   fuerzaDisparo: 100
   sonidoDisparo: {fileID: 0}
---- !u!114 &2038787372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2038787363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f86d6536982f144e8d24b6889536a52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duracionInvencibilidad: 20
 --- !u!1 &2076419800
 GameObject:
   m_ObjectHideFlags: 0
@@ -18215,7 +18215,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PowerUpInvencibilidad
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2407505853485255222, guid: 05c1ce32dc561664b99ae684e851b9a1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 05c1ce32dc561664b99ae684e851b9a1, type: 3}
 --- !u!1001 &6783334203247476919
 PrefabInstance:
