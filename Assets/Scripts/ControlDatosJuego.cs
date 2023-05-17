@@ -27,12 +27,13 @@ public class ControlDatosJuego : MonoBehaviour
 
     }
      ControlPowerUp[] powerups = FindObjectsOfType<ControlPowerUp>();
+
      if(powerups.Length>0)
      {
           foreach (ControlPowerUp powerup in powerups)
-     {
+         {
           maxpuntuacion += powerup.cantidad;     
-     }
+         }
      }
 
 

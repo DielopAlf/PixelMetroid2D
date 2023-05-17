@@ -9,10 +9,10 @@ public class FlipEnemigo : MonoBehaviour
     private float posicionXAnterior;
    
    private void Start()
-    {
+   {
         posicionXAnterior = transform.parent.position.x;
         sprite = GetComponent<SpriteRenderer>();
-    }
+   }
 
     
     private void Update()
