@@ -40,6 +40,7 @@ public class ControlJugador : MonoBehaviour
 
     private Balas balas;
 
+    private bool disparado; 
 
     private bool vulnerable;
 
@@ -58,6 +59,8 @@ public class ControlJugador : MonoBehaviour
         vidasOriginales = numVidas;
         duracionInvencibilidad = 0f;
 
+        
+
         fisica = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animacion = GetComponent<Animator>();
@@ -67,6 +70,7 @@ public class ControlJugador : MonoBehaviour
         velocidadOriginal = velocidad;
 
         balas = GetComponent<Balas>();
+        disparado = false;
     }
 
 
@@ -79,6 +83,7 @@ public class ControlJugador : MonoBehaviour
     private void Update()
     {
         GameObject[] powerUpsArray = GameObject.FindGameObjectsWithTag("PowerUps");
+
         if (Input.GetKeyDown(KeyCode.Space) && TocarSuelo())
         {
 
@@ -91,21 +96,31 @@ public class ControlJugador : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
+            
             balas.Disparar();
+            disparado = true;
+           
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetMouseButtonUp(0))
         {
-            balas.IniciarDisparoContinuo();
+
+           balas.Disparar();
+           disparado =false;
+
         }
-        else if (Input.GetKeyUp(KeyCode.W))
-        {
-            balas.DetenerDisparoContinuo();
-        }
-        /* else if (powerUpsArray.Length == 0)
+        /* if (Input.GetKeyDown(KeyCode.W))
          {
-             GanarJuego();
-         }*/
+             balas.IniciarDisparoContinuo();
+         }
+         else if (Input.GetKeyUp(KeyCode.W))
+         {
+             balas.DetenerDisparoContinuo();
+         }
+         /* else if (powerUpsArray.Length == 0)
+          {
+              GanarJuego();
+          }*/
 
         animarJugador();
 
@@ -173,6 +188,13 @@ public class ControlJugador : MonoBehaviour
             animacion.Play("jugadorCorriendo");
         else if ((fisica.velocity.x < 1 || fisica.velocity.x > -1) && fisica.velocity.y == 0)
             animacion.Play("jugadorParado");
+
+        if (disparado == true)
+        {
+            Debug.Log("INSIDE ANIMAR");
+            animacion.Play("jugadordisparando");
+        }
+
     }
 
     private bool TocarSuelo()

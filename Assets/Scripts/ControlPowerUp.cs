@@ -10,7 +10,7 @@ public class ControlPowerUp : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
 
     {
-        Debug.Log("recogido");
+
         if (collision.CompareTag("Player"))
         {
             
