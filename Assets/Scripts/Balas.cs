@@ -56,12 +56,12 @@ public class Balas : MonoBehaviour
          }
      }*/
 
-    public void Disparar()
+    public void Disparar(bool flipJugador)
     {
         GameObject disparo = Instantiate(prefabProyectil, puntoDisparo.position, puntoDisparo.rotation);
         Rigidbody2D rbDisparo = disparo.GetComponent<Rigidbody2D>();
-
-        Vector2 direccion = (transform.localScale.x > 0) ? Vector2.right : Vector2.left;
+        // buscar valor de flipx del jugador
+        Vector2 direccion = (flipJugador) ? Vector2.left : Vector2.right;
 
         rbDisparo.AddForce(direccion * fuerzaDisparo, ForceMode2D.Impulse);
 

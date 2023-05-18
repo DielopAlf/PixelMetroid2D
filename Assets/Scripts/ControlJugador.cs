@@ -26,6 +26,7 @@ public class ControlJugador : MonoBehaviour
 
     private int vidasOriginales;
 
+    private bool corriendo;
 
     private float duracionInvencibilidad;
 
@@ -59,7 +60,8 @@ public class ControlJugador : MonoBehaviour
         vidasOriginales = numVidas;
         duracionInvencibilidad = 0f;
 
-        
+        corriendo = false;
+
 
         fisica = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
@@ -97,7 +99,7 @@ public class ControlJugador : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             
-            balas.Disparar();
+            balas.Disparar(sprite.flipX);
             disparado = true;
            
         }
@@ -105,7 +107,7 @@ public class ControlJugador : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
 
-           balas.Disparar();
+           balas.Disparar(sprite.flipX);
            disparado =false;
 
         }
@@ -183,17 +185,27 @@ public class ControlJugador : MonoBehaviour
 
     private void animarJugador()
     {
-        if (!TocarSuelo()) animacion.Play("jugadorSaltando");
-        else if ((fisica.velocity.x > 1 || fisica.velocity.x < -1) && fisica.velocity.y == 0)
-            animacion.Play("jugadorCorriendo");
-        else if ((fisica.velocity.x < 1 || fisica.velocity.x > -1) && fisica.velocity.y == 0)
-            animacion.Play("jugadorParado");
-
         if (disparado == true)
         {
             Debug.Log("INSIDE ANIMAR");
             animacion.Play("jugadordisparando");
+            disparado = false;
         }
+        else
+        {
+            if (!TocarSuelo()) animacion.Play("jugadorSaltando");
+            else if ((fisica.velocity.x > 1 || fisica.velocity.x < -1) && fisica.velocity.y == 0)
+
+                animacion.Play("jugadorCorriendo");
+            // corriendo = true;
+
+            else if ((fisica.velocity.x < 1 || fisica.velocity.x > -1) && fisica.velocity.y == 0)
+                animacion.Play("jugadorParado");
+
+        }
+
+
+
 
     }
 
