@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - Proyectil
   - PowerUpInvencibilidad
+  - Muro
   layers:
   - Default
   - TransparentFX
