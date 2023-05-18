@@ -11,11 +11,11 @@ public class Balas : MonoBehaviour
    // private bool disparado;
     public float tiempoEntreProyectiles = 0.75f;
     private bool isFiring = false;
+    
 
-    /* private void Start()
-     {
-         disparado = false;
-     }^*/
+
+
+    
 
     /* private void Update()
      {
@@ -65,9 +65,10 @@ public class Balas : MonoBehaviour
 
         rbDisparo.AddForce(direccion * fuerzaDisparo, ForceMode2D.Impulse);
 
-       // AudioSource.PlayClipAtPoint(sonidoDisparo, puntoDisparo.position);
+      
+        // AudioSource.PlayClipAtPoint(sonidoDisparo, puntoDisparo.position);
 
-        Destroy(disparo, 0.3f);
+        Destroy(disparo, 1f);
         //disparado = true;
     }
 }

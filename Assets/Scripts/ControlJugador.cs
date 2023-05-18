@@ -24,6 +24,8 @@ public class ControlJugador : MonoBehaviour
 
     private bool invencible;
 
+     public float tiempoEntreProyectiles = 0.75f;
+
     private int vidasOriginales;
 
     private bool corriendo;
@@ -185,14 +187,14 @@ public class ControlJugador : MonoBehaviour
 
     private void animarJugador()
     {
-        if (disparado == true)
+        /*if (disparado == true)
         {
             Debug.Log("INSIDE ANIMAR");
             animacion.Play("jugadordisparando");
             disparado = false;
-        }
-        else
-        {
+        }*/
+        //if()
+        //{
             if (!TocarSuelo()) animacion.Play("jugadorSaltando");
             else if ((fisica.velocity.x > 1 || fisica.velocity.x < -1) && fisica.velocity.y == 0)
 
@@ -202,7 +204,8 @@ public class ControlJugador : MonoBehaviour
             else if ((fisica.velocity.x < 1 || fisica.velocity.x > -1) && fisica.velocity.y == 0)
                 animacion.Play("jugadorParado");
 
-        }
+
+        //}
 
 
 
