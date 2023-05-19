@@ -17762,7 +17762,7 @@ MonoBehaviour:
   fuerzaSalto: 10
   fuerzaSaltoDoble: 5
   puntuacion: 0
-  numVidas: 8
+  numVidas: 2
   tiempoNivel: 300
   tiempoEntreProyectiles: 0.75
   saltoSfx: {fileID: 8300000, guid: 322095217cbf9454ca9253f0be528be6, type: 3}

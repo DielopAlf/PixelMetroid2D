@@ -29,7 +29,11 @@ public class ControlJugador : MonoBehaviour
 
     private bool invencible;
 
-     public float tiempoEntreProyectiles = 0.75f;
+    private bool jugadorMuerto;
+
+
+
+    public float tiempoEntreProyectiles = 0.75f;
 
     private int vidasOriginales;
 
@@ -52,6 +56,8 @@ public class ControlJugador : MonoBehaviour
 
     private bool vulnerable;
 
+    private float tiempoAnimacionMuerte = 5f;
+     
     private void Awake()
     {
         audiosource = GetComponent<AudioSource>();
@@ -70,6 +76,8 @@ public class ControlJugador : MonoBehaviour
         corriendo = false;
 
         haSaltado = false;
+
+        jugadorMuerto = false;
 
         fisica = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
@@ -219,31 +227,41 @@ public class ControlJugador : MonoBehaviour
             animacion.Play("jugadordisparando");
             disparado = false;
         }*/
-        //if()
-        //{
-            if (!TocarSuelo()) animacion.Play("jugadorSaltando");
-            else if ((fisica.velocity.x > 1 || fisica.velocity.x < -1) && fisica.velocity.y == 0)
 
-                animacion.Play("jugadorCorriendo");
-            // corriendo = true;
+        if (jugadorMuerto == true)
 
-            else if ((fisica.velocity.x < 1 || fisica.velocity.x > -1) && fisica.velocity.y == 0)
-                animacion.Play("jugadorParado");
-
-
-        //}
+        {
+            animacion.Play("jugadormuerto");
+            Time.timeScale = 0.5f;
 
 
 
+        }
+        else if(!TocarSuelo()) animacion.Play("jugadorSaltando");
+
+        else if ((fisica.velocity.x > 1 || fisica.velocity.x < -1) && fisica.velocity.y == 0)
+
+            animacion.Play("jugadorCorriendo");
+        // corriendo = true;
+
+        else if ((fisica.velocity.x < 1 || fisica.velocity.x > -1) && fisica.velocity.y == 0)
+        animacion.Play("jugadorParado");
+        
+
+        
 
     }
 
-   
-
     public void FinJuego()
     {
+
+        
+
         datosjuegos.Ganado = false;
         datosjuegos.Puntuacion = Mathf.FloorToInt(puntuacion);
+
+        
+
         SceneManager.LoadScene("FinNivel");
     }
 
@@ -263,7 +281,11 @@ public class ControlJugador : MonoBehaviour
 
             if (numVidas == 0)
             {
-                FinJuego();
+                jugadorMuerto = true;
+
+                animarJugador();
+                
+               Invoke ("FinJuego",0.50f);
             }
             else
             {
@@ -295,6 +317,7 @@ public class ControlJugador : MonoBehaviour
         else if (collision.CompareTag("Muerto"))
         {
             transform.position = posicionInicial;
+
             QuitarVida();
         }
         else if (collision.CompareTag("PowerUpVelocidad"))
