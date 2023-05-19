@@ -17760,6 +17760,7 @@ MonoBehaviour:
   canvas: {fileID: 1445884371}
   velocidad: 5
   fuerzaSalto: 10
+  fuerzaSaltoDoble: 5
   puntuacion: 0
   numVidas: 8
   tiempoNivel: 300

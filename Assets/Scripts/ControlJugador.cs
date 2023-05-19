@@ -13,6 +13,9 @@ public class ControlJugador : MonoBehaviour
 
     public int velocidad;
     public int fuerzaSalto;
+
+    public int fuerzaSaltoDoble;
+
     public int puntuacion;
     public int numVidas;
     private Rigidbody2D fisica;
@@ -21,6 +24,8 @@ public class ControlJugador : MonoBehaviour
     private float tiempoInicio;
     public float tiempoNivel;
     private int tiempoEmpleado;
+
+    private bool haSaltado;
 
     private bool invencible;
 
@@ -64,6 +69,7 @@ public class ControlJugador : MonoBehaviour
 
         corriendo = false;
 
+        haSaltado = false;
 
         fisica = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
@@ -84,16 +90,36 @@ public class ControlJugador : MonoBehaviour
         fisica.velocity = new Vector2(entradax * velocidad, fisica.velocity.y);
     }
 
+
+
+    private bool TocarSuelo()
+    {
+        RaycastHit2D toca = Physics2D.Raycast(transform.position + new Vector3(0, -2f, 0), Vector2.down, 0.2f);
+        return toca.collider != null;
+    }
+  
     private void Update()
     {
         GameObject[] powerUpsArray = GameObject.FindGameObjectsWithTag("PowerUps");
 
         if (Input.GetKeyDown(KeyCode.Space) && TocarSuelo())
         {
+            haSaltado = true;
 
             fisica.AddForce(Vector2.up * fuerzaSalto, ForceMode2D.Impulse);
             audiosource.PlayOneShot(saltoSfx);
         }
+        else if(Input.GetKeyDown(KeyCode.Space) && haSaltado== true)
+        {
+
+            haSaltado = false;
+
+            fisica.AddForce(Vector2.up * fuerzaSaltoDoble, ForceMode2D.Impulse);
+            audiosource.PlayOneShot(saltoSfx);
+
+        }
+
+
         if (fisica.velocity.x > 0) sprite.flipX = false;
 
         else if (fisica.velocity.x < 0) sprite.flipX = true;
@@ -212,11 +238,7 @@ public class ControlJugador : MonoBehaviour
 
     }
 
-    private bool TocarSuelo()
-    {
-        RaycastHit2D toca = Physics2D.Raycast(transform.position + new Vector3(0, -2f, 0), Vector2.down, 0.2f);
-        return toca.collider != null;
-    }
+   
 
     public void FinJuego()
     {
